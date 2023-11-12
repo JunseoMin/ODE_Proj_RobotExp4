@@ -112,10 +112,9 @@ void nearCB(void* data, dGeomID o1, dGeomID o2) {
 			}
 		}
 	}
-	else if(())
-	//collide with objects
+	else
 	{
-
+		//obstacle collide between object codes need collision box
 	}
 }
 
