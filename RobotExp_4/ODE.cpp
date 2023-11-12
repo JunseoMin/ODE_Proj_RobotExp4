@@ -197,7 +197,16 @@ void InitRobot()
 
 void PControl()	//hindge joint Pcontrol
 {
+	dReal Kp = 10, fMax = 5000.0;
+	dReal a_error_q[MAX_JOINT_NUM];
 
-	//TO DO
+	for (int i = 0; i < MAX_JOINT_NUM; i++)
+	{
+		g_cur_q[i] = dJointGetHingeAngle(g_oJoint[i]);
 
+		a_error_q[i] = g_tar_q[i] - g_cur_q[i];
+
+		dJointSetHingeParam(g_oJoint[i], dParamVel, Kp*a_error_q[i]);
+		dJointSetHingeParam(g_oJoint[i], dParamFMax, fMax);
+	}
 }
