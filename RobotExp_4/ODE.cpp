@@ -15,10 +15,11 @@
 
 dsFunctions g_Fn;
 
+//set addresses
 static dWorldID g_World;
 static dSpaceID g_Space;
 static dJointGroupID g_Contactgroup;
-static dGeomID g_Ground;	//ground address
+static dGeomID g_Ground;	
 
 
 Object g_oObj[MAX_JOINT_NUM + 1];	// link global parameter
@@ -143,6 +144,8 @@ void SimLoopDrawStuff(int pause)
 	}
 	*/
 
+
+	// for visualization
 	dsSetColor(0., 0.4, 0.4);
 	dGeomCapsuleGetParams(g_oObj[0].geom, &r, &length);	//set capsule params load from g_oObj
 	dsDrawCapsuleD(dBodyGetPosition(g_oObj[0].body), dBodyGetRotation(g_oObj[0].body), (float)length, (float)r);	//load geom from init robot function : type casted
