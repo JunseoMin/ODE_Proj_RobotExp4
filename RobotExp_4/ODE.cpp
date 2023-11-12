@@ -92,7 +92,7 @@ void nearCB(void* data, dGeomID o1, dGeomID o2) {
 	static const int N = 5;
 	dContact contact[N];
 
-	if ((g_Ground == o1) || (g_Ground == o2))
+	if ((g_Ground == o1) || (g_Ground == o2))	// if object collide with ground
 	{
 		bool isGround = ((g_Ground == o1) || (g_Ground == o2));
 		int n = dCollide(o1, o2, N, &contact[0].geom, sizeof(dContact));
@@ -111,6 +111,11 @@ void nearCB(void* data, dGeomID o1, dGeomID o2) {
 				dJointAttach(c, dGeomGetBody(contact[i].geom.g1), dGeomGetBody(contact[i].geom.g2));
 			}
 		}
+	}
+	else if(())
+	//collide with objects
+	{
+
 	}
 }
 
