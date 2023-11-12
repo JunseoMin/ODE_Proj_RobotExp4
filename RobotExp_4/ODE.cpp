@@ -24,7 +24,7 @@ static dGeomID g_Ground;	//ground address
 Object g_oObj[MAX_JOINT_NUM + 1];	// link global parameter
 static dJointID g_oJoint[MAX_JOINT_NUM + 1]; // joint global parameter
 
-double g_tar_q[MAX_JOINT_NUM] = { 0.0 , 45 * DEG2RAD, 30 * DEG2RAD };	// joint trarget position
+double g_tar_q[MAX_JOINT_NUM] = { 0.0 , 45. * DEG2RAD, 30. * DEG2RAD };	// joint trarget position
 double g_cur_q[MAX_JOINT_NUM] = { 0.0, 0.0, 0.0 };	// current joint position
 
 void InitDrawStuff() {
@@ -119,7 +119,7 @@ void SimLoopDrawStuff(int pause)
 {
 	//page 6
 	//TO DO
-	dSpaceCollide(g_Space, 0, &nearCB);
+	//dSpaceCollide(g_Space, 0, &nearCB);
 	
 	PControl();
 
@@ -250,20 +250,20 @@ void PControl()	//hindge joint Pcontrol
 
 	for (int i = 1; i < MAX_JOINT_NUM; i++)
 	{
-		g_cur_q[i - 1] = dJointGetHingeAngle(g_oJoint[i]);
+		g_cur_q[i] = dJointGetHingeAngle(g_oJoint[i]);
 
-		a_error_q[i - 1] = g_tar_q[i - 1] - g_cur_q[i - 1];
+		a_error_q[i] = g_tar_q[i] - g_cur_q[i];
 		//gymbol lock control
-		if (g_tar_q[i - 1] - g_cur_q[i - 1] > 180.0*DEG2RAD)
+		if (g_tar_q[i] - g_cur_q[i] > 180.0*DEG2RAD)
 		{
-			g_cur_q[i - 1] += 359.9*DEG2RAD;
+			g_cur_q[i] += 359.9*DEG2RAD;
 		}
 
-		if (g_tar_q[i - 1] - g_cur_q[i - 1] < -180.0*DEG2RAD)
+		if (g_tar_q[i] - g_cur_q[i] < -180.0*DEG2RAD)
 		{
-			g_cur_q[i - 1] -= 359.9*DEG2RAD;
+			g_cur_q[i] -= 359.9*DEG2RAD;
 		}
-
+		
 		dJointSetHingeParam(g_oJoint[i], dParamVel, Kp*a_error_q[i]);
 		dJointSetHingeParam(g_oJoint[i], dParamFMax, fMax);
 	}
