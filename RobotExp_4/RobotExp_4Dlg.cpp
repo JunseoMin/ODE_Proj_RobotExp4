@@ -97,6 +97,7 @@ BEGIN_MESSAGE_MAP(CRobotExp_4Dlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON2, &CRobotExp_4Dlg::OnBnClickedButton2)
 	ON_BN_CLICKED(IDC_BUTTON3, &CRobotExp_4Dlg::OnBnClickedButton3)
 	ON_WM_DESTROY()
+	ON_BN_CLICKED(IDC_BUTTON_GRAPH, &CRobotExp_4Dlg::OnBnClickedButtonGraph)
 END_MESSAGE_MAP()
 
 
@@ -145,6 +146,8 @@ BOOL CRobotExp_4Dlg::OnInitDialog()
 	m_editTarY.SetWindowTextA("0.0");
 	m_editTarZ.SetWindowTextA("0.0");
 	
+	m_pGraphDlg = new CGraphDlg();
+	m_pGraphDlg->Create(IDD_GRAPH_DIALOG);
 
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
@@ -464,5 +467,16 @@ void CRobotExp_4Dlg::OnDestroy()
 {
 	CDialogEx::OnDestroy();
 
+	delete m_pGraphDlg;
 	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
+}
+
+
+void CRobotExp_4Dlg::OnBnClickedButtonGraph()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	BOOL bCheck = m_pGraphDlg->IsWindowVisible();
+	if (bCheck) m_pGraphDlg->ShowWindow(SW_HIDE);
+	else m_pGraphDlg->ShowWindow(SW_SHOW);
+	
 }

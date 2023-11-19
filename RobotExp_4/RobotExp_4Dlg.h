@@ -6,6 +6,7 @@
 #include "Comm.h"
 #include "CommWork.h"
 #include "DeviceListReader.h"
+#include "GraphDlg.h"
 
 // CRobotExp_4Dlg 대화 상자
 class CRobotExp_4Dlg : public CDialogEx
@@ -69,4 +70,9 @@ public:
 	afx_msg void OnBnClickedButton2();
 	afx_msg void OnBnClickedButton3();
 	afx_msg void OnDestroy();
+
+private:
+	CGraphDlg* m_pGraphDlg;
+public:
+	afx_msg void OnBnClickedButtonGraph();
 };

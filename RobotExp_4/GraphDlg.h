@@ -1,5 +1,6 @@
 #pragma once
 #include "NTGraph.h"
+#include "COCX.h"
 
 
 // CGraphDlg 대화 상자입니다.
@@ -23,4 +24,8 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 
+	COCX m_ntgPos;
+	COCX m_ntgVel;
+	COCX m_ntgTorque;
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
 };
