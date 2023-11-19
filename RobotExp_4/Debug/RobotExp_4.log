@@ -17,6 +17,6 @@ d:\projects\robotexp4_mon\robotexp_4\robotexp_4.cpp(120): warning C4566: 유니�
 d:\projects\robotexp4_mon\robotexp_4\robotexp_4.cpp(120): warning C4566: 유니버설 문자 이름 '\u01AE'(으)로 표현되는 문자는 현재 코드 페이지(949)에서 표현할 수 없습니다.
 d:\projects\robotexp4_mon\robotexp_4\robotexp_4.cpp(120): warning C4566: 유니버설 문자 이름 '\u03F4'(으)로 표현되는 문자는 현재 코드 페이지(949)에서 표현할 수 없습니다.
   RobotExp_4Dlg.cpp
-d:\projects\robotexp4_mon\robotexp_4\robotexp_4dlg.cpp(231): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+d:\projects\robotexp4_mon\robotexp_4\robotexp_4dlg.cpp(249): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
   코드를 생성하고 있습니다...
   RobotExp_4.vcxproj -> D:\projects\RobotExp4_mon\Debug\RobotExp_4.exe

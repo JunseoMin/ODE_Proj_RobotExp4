@@ -65,6 +65,20 @@ void CRobotExp_4Dlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_CHECK1_OPEN, m_CheckOpen);
 	DDX_Control(pDX, IDC_EDIT_SEND, m_EditSend);
 	DDX_Control(pDX, IDC_EDIT_RECV, m_EditRecv);
+	DDX_Control(pDX, IDC_EDIT_CUR_POS_1, m_editCurPos1);
+	DDX_Control(pDX, IDC_EDIT_TAR_POS_1, m_editTarPos1);
+	DDX_Control(pDX, IDC_EDIT_TAR_POS_2, m_editTarPos2);
+	DDX_Control(pDX, IDC_EDIT_CUR_POS_2, m_editCurPos2);
+	DDX_Control(pDX, IDC_EDIT_TAR_VEL, m_editTarVel);
+	DDX_Control(pDX, IDC_EDIT_CUR_VEL, m_editCurVel);
+	DDX_Control(pDX, IDC_EDIT_TAR_TOR, m_editTarTorq);
+	DDX_Control(pDX, IDC_EDIT_CUR_TOR, m_editCurTorq);
+	DDX_Control(pDX, IDC_EDIT_TAR_X, m_editTarX);
+	DDX_Control(pDX, IDC_EDIT_CUR_X, m_editCurX);
+	DDX_Control(pDX, IDC_EDIT_TAR_Y, m_editTarY);
+	DDX_Control(pDX, IDC_EDIT_CUR_Y, m_editCurY);
+	DDX_Control(pDX, IDC_EDIT_TAR_Z, m_editTarZ);
+	DDX_Control(pDX, IDC_EDIT_CUR_Z, m_editCurZ);
 }
 
 BEGIN_MESSAGE_MAP(CRobotExp_4Dlg, CDialogEx)
@@ -78,6 +92,10 @@ BEGIN_MESSAGE_MAP(CRobotExp_4Dlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BTN_SEND, &CRobotExp_4Dlg::OnBnClickedBtnSend)
 	ON_BN_CLICKED(IDC_BTN_CLEAR, &CRobotExp_4Dlg::OnBnClickedBtnClear)
 	ON_WM_TIMER()
+	ON_BN_CLICKED(IDC_BUTTON1, &CRobotExp_4Dlg::OnBnClickedButton1)
+	ON_BN_CLICKED(IDC_BUTTON2, &CRobotExp_4Dlg::OnBnClickedButton2)
+	ON_BN_CLICKED(IDC_BUTTON3, &CRobotExp_4Dlg::OnBnClickedButton3)
+	ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
 
@@ -313,4 +331,33 @@ void CRobotExp_4Dlg::OnTimer(UINT_PTR nIDEvent)
 	}
 
 	CDialogEx::OnTimer(nIDEvent);
+}
+
+
+void CRobotExp_4Dlg::OnBnClickedButton1()
+{
+	// init button
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+}
+
+
+void CRobotExp_4Dlg::OnBnClickedButton2()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	//foward button
+}
+
+
+void CRobotExp_4Dlg::OnBnClickedButton3()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	// backward button
+}
+
+
+void CRobotExp_4Dlg::OnDestroy()
+{
+	CDialogEx::OnDestroy();
+
+	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
 }

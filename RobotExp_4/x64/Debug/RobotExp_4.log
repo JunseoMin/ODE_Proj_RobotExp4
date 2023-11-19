@@ -27,6 +27,30 @@ d:\projects\robotexp4_mon\robotexp_4\robotexp_4.cpp(120): warning C4566: 유니�
 d:\projects\robotexp4_mon\robotexp_4\robotexp_4.cpp(120): warning C4566: 유니버설 문자 이름 '\u01AE'(으)로 표현되는 문자는 현재 코드 페이지(949)에서 표현할 수 없습니다.
 d:\projects\robotexp4_mon\robotexp_4\robotexp_4.cpp(120): warning C4566: 유니버설 문자 이름 '\u03F4'(으)로 표현되는 문자는 현재 코드 페이지(949)에서 표현할 수 없습니다.
   RobotExp_4Dlg.cpp
+d:\projects\robotexp4_mon\robotexp_4\robotexp_4dlg.cpp(233): error C2664: 'int CComboBox::AddString(LPCTSTR)': 인수 1을(를) 'const _Elem *'에서 'LPCTSTR'(으)로 변환할 수 없습니다.
+          with
+          [
+              _Elem=char
+          ]
+  d:\projects\robotexp4_mon\robotexp_4\robotexp_4dlg.cpp(233): note: 가리킨 형식이 관련이 없습니다. 변환하려면 reinterpret_cast, C 스타일 캐스트 또는 함수 스타일 캐스트가 필요합니다.
+d:\projects\robotexp4_mon\robotexp_4\robotexp_4dlg.cpp(249): error C2664: 'int atoi(const char *)': 인수 1을(를) 'wchar_t *'에서 'const char *'(으)로 변환할 수 없습니다.
+  d:\projects\robotexp4_mon\robotexp_4\robotexp_4dlg.cpp(249): note: 가리킨 형식이 관련이 없습니다. 변환하려면 reinterpret_cast, C 스타일 캐스트 또는 함수 스타일 캐스트가 필요합니다.
+d:\projects\robotexp4_mon\robotexp_4\robotexp_4dlg.cpp(249): error C2660: 'CComm::Open': 함수는 1개의 매개 변수를 사용하지 않습니다.
+  d:\projects\robotexp4_mon\robotexp_4\comm.h(56): note: 'CComm::Open' 선언을 참조하십시오.
+d:\projects\robotexp4_mon\robotexp_4\robotexp_4dlg.cpp(251): error C2664: 'void CWnd::SetWindowTextW(LPCTSTR)': 인수 1을(를) 'const char [6]'에서 'LPCTSTR'(으)로 변환할 수 없습니다.
+  d:\projects\robotexp4_mon\robotexp_4\robotexp_4dlg.cpp(251): note: 가리킨 형식이 관련이 없습니다. 변환하려면 reinterpret_cast, C 스타일 캐스트 또는 함수 스타일 캐스트가 필요합니다.
+d:\projects\robotexp4_mon\robotexp_4\robotexp_4dlg.cpp(255): error C2665: 'AfxMessageBox': 2개의 오버로드 중 모든 인수 형식을 변환할 수 있는 오버로드가 없습니다.
+  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.16.27023\atlmfc\include\afxwin.h(6549): note: 'int AfxMessageBox(UINT,UINT,UINT)'일 수 있습니다.
+  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.16.27023\atlmfc\include\afxwin.h(6547): note: 또는       'int AfxMessageBox(LPCTSTR,UINT,UINT)'
+  d:\projects\robotexp4_mon\robotexp_4\robotexp_4dlg.cpp(255): note: 인수 목록 '(const char [16])'을(를) 일치시키는 동안
+d:\projects\robotexp4_mon\robotexp_4\robotexp_4dlg.cpp(262): error C2664: 'void CWnd::SetWindowTextW(LPCTSTR)': 인수 1을(를) 'const char [5]'에서 'LPCTSTR'(으)로 변환할 수 없습니다.
+  d:\projects\robotexp4_mon\robotexp_4\robotexp_4dlg.cpp(262): note: 가리킨 형식이 관련이 없습니다. 변환하려면 reinterpret_cast, C 스타일 캐스트 또는 함수 스타일 캐스트가 필요합니다.
+d:\projects\robotexp4_mon\robotexp_4\robotexp_4dlg.cpp(287): error C2664: 'int CComm::Write(const char *,int)': 인수 1을(를) 'wchar_t *'에서 'const char *'(으)로 변환할 수 없습니다.
+  d:\projects\robotexp4_mon\robotexp_4\robotexp_4dlg.cpp(287): note: 가리킨 형식이 관련이 없습니다. 변환하려면 reinterpret_cast, C 스타일 캐스트 또는 함수 스타일 캐스트가 필요합니다.
+d:\projects\robotexp4_mon\robotexp_4\robotexp_4dlg.cpp(289): error C2664: 'void CWnd::SetWindowTextW(LPCTSTR)': 인수 1을(를) 'const char [1]'에서 'LPCTSTR'(으)로 변환할 수 없습니다.
+  d:\projects\robotexp4_mon\robotexp_4\robotexp_4dlg.cpp(289): note: 가리킨 형식이 관련이 없습니다. 변환하려면 reinterpret_cast, C 스타일 캐스트 또는 함수 스타일 캐스트가 필요합니다.
+d:\projects\robotexp4_mon\robotexp_4\robotexp_4dlg.cpp(297): error C2664: 'void CWnd::SetWindowTextW(LPCTSTR)': 인수 1을(를) 'const char [1]'에서 'LPCTSTR'(으)로 변환할 수 없습니다.
+  d:\projects\robotexp4_mon\robotexp_4\robotexp_4dlg.cpp(297): note: 가리킨 형식이 관련이 없습니다. 변환하려면 reinterpret_cast, C 스타일 캐스트 또는 함수 스타일 캐스트가 필요합니다.
   SharedMemory.cpp
   SystemMemory.cpp
 d:\projects\robotexp4_mon\robotexp_4\systemmemory.cpp(140): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
