@@ -1,22 +1,3 @@
-﻿  GraphDlg.cpp
-  RobotExp_4.cpp
-d:\projects\robotexp4_mon\robotexp_4\robotexp_4.cpp(89): warning C4566: 유니버설 문자 이름 '\uFFFD'(으)로 표현되는 문자는 현재 코드 페이지(949)에서 표현할 수 없습니다.
-d:\projects\robotexp4_mon\robotexp_4\robotexp_4.cpp(89): warning C4566: 유니버설 문자 이름 '\u05F7'(으)로 표현되는 문자는 현재 코드 페이지(949)에서 표현할 수 없습니다.
-d:\projects\robotexp4_mon\robotexp_4\robotexp_4.cpp(119): warning C4566: 유니버설 문자 이름 '\uFFFD'(으)로 표현되는 문자는 현재 코드 페이지(949)에서 표현할 수 없습니다.
-d:\projects\robotexp4_mon\robotexp_4\robotexp_4.cpp(119): warning C4566: 유니버설 문자 이름 '\u022D'(으)로 표현되는 문자는 현재 코드 페이지(949)에서 표현할 수 없습니다.
-d:\projects\robotexp4_mon\robotexp_4\robotexp_4.cpp(119): warning C4566: 유니버설 문자 이름 '\u06B8'(으)로 표현되는 문자는 현재 코드 페이지(949)에서 표현할 수 없습니다.
-d:\projects\robotexp4_mon\robotexp_4\robotexp_4.cpp(119): warning C4566: 유니버설 문자 이름 '\u01F7'(으)로 표현되는 문자는 현재 코드 페이지(949)에서 표현할 수 없습니다.
-d:\projects\robotexp4_mon\robotexp_4\robotexp_4.cpp(119): warning C4566: 유니버설 문자 이름 '\u05F7'(으)로 표현되는 문자는 현재 코드 페이지(949)에서 표현할 수 없습니다.
-d:\projects\robotexp4_mon\robotexp_4\robotexp_4.cpp(119): warning C4566: 유니버설 문자 이름 '\u0121'(으)로 표현되는 문자는 현재 코드 페이지(949)에서 표현할 수 없습니다.
-d:\projects\robotexp4_mon\robotexp_4\robotexp_4.cpp(119): warning C4566: 유니버설 문자 이름 '\u02B0'(으)로 표현되는 문자는 현재 코드 페이지(949)에서 표현할 수 없습니다.
-d:\projects\robotexp4_mon\robotexp_4\robotexp_4.cpp(119): warning C4566: 유니버설 문자 이름 '\u02F4'(으)로 표현되는 문자는 현재 코드 페이지(949)에서 표현할 수 없습니다.
-d:\projects\robotexp4_mon\robotexp_4\robotexp_4.cpp(119): warning C4566: 유니버설 문자 이름 '\u03F4'(으)로 표현되는 문자는 현재 코드 페이지(949)에서 표현할 수 없습니다.
-d:\projects\robotexp4_mon\robotexp_4\robotexp_4.cpp(120): warning C4566: 유니버설 문자 이름 '\uFFFD'(으)로 표현되는 문자는 현재 코드 페이지(949)에서 표현할 수 없습니다.
-d:\projects\robotexp4_mon\robotexp_4\robotexp_4.cpp(120): warning C4566: 유니버설 문자 이름 '\u022D'(으)로 표현되는 문자는 현재 코드 페이지(949)에서 표현할 수 없습니다.
-d:\projects\robotexp4_mon\robotexp_4\robotexp_4.cpp(120): warning C4566: 유니버설 문자 이름 '\u06BF'(으)로 표현되는 문자는 현재 코드 페이지(949)에서 표현할 수 없습니다.
-d:\projects\robotexp4_mon\robotexp_4\robotexp_4.cpp(120): warning C4566: 유니버설 문자 이름 '\u01AE'(으)로 표현되는 문자는 현재 코드 페이지(949)에서 표현할 수 없습니다.
-d:\projects\robotexp4_mon\robotexp_4\robotexp_4.cpp(120): warning C4566: 유니버설 문자 이름 '\u03F4'(으)로 표현되는 문자는 현재 코드 페이지(949)에서 표현할 수 없습니다.
-  RobotExp_4Dlg.cpp
-d:\projects\robotexp4_mon\robotexp_4\robotexp_4dlg.cpp(249): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-  코드를 생성하고 있습니다...
+﻿  RobotExp_4Dlg.cpp
+d:\projects\robotexp4_mon\robotexp_4\robotexp_4dlg.cpp(262): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
   RobotExp_4.vcxproj -> D:\projects\RobotExp4_mon\Debug\RobotExp_4.exe

@@ -8,6 +8,7 @@
 #include "afxdialogex.h"
 #include "DataType.h"
 #include <math.h>
+#include "SystemMemory.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -132,6 +133,18 @@ BOOL CRobotExp_4Dlg::OnInitDialog()
 
 	// TODO: 여기에 추가 초기화 작업을 추가합니다.
 	SetTimer(1001, 33, NULL);
+
+	m_editTarPos1.SetWindowTextA("0");
+	m_editTarPos2.SetWindowTextA("0");
+
+	m_editTarVel.SetWindowTextA("0");
+
+	m_editTarTorq.SetWindowTextA("0");
+
+	m_editTarX.SetWindowTextA("0.0");
+	m_editTarY.SetWindowTextA("0.0");
+	m_editTarZ.SetWindowTextA("0.0");
+	
 
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
@@ -319,7 +332,26 @@ void CRobotExp_4Dlg::OnBnClickedBtnClear()
 void CRobotExp_4Dlg::OnTimer(UINT_PTR nIDEvent)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-	if (m_comm.isOpen())
+	DataType_t jointData;
+	GET_SYSTEM_MEMORY("JointData", jointData);
+
+	char pszTmp[512];
+	sprintf_s(pszTmp, "%.2lf", jointData.Q_cur[0] * RAD2DEG);
+	m_editCurPos1.SetWindowTextA(pszTmp);
+	sprintf_s(pszTmp, "%.2lf", jointData.Q_cur[1] * RAD2DEG);
+	m_editCurPos2.SetWindowTextA(pszTmp);
+
+	double dTemp[3] = { 0, 0, 0 };
+	SolveForwardKinematics(jointData.Q_cur[0] * RAD2DEG, jointData.Q_cur[1] * RAD2DEG, dTemp);
+	sprintf_s(pszTmp, "%.2lf", dTemp[0]);
+	m_editCurX.SetWindowTextA(pszTmp);
+	sprintf_s(pszTmp, "%.2lf", dTemp[1]);
+	m_editCurY.SetWindowTextA(pszTmp);
+	sprintf_s(pszTmp, "%.2lf", dTemp[2]);
+	m_editCurZ.SetWindowTextA(pszTmp);
+
+	
+	/*if (m_comm.isOpen())
 	{
 		CString str;
 		char buf[4096] = { 0, };
@@ -329,7 +361,7 @@ void CRobotExp_4Dlg::OnTimer(UINT_PTR nIDEvent)
 
 		m_EditRecv.SetWindowText(str);
 	}
-
+	*/
 	CDialogEx::OnTimer(nIDEvent);
 }
 
@@ -338,6 +370,25 @@ void CRobotExp_4Dlg::OnBnClickedButton1()
 {
 	// init button
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	DataType_t jointData;
+	GET_SYSTEM_MEMORY("JointData", jointData);
+
+	jointData.Q_tar[0] = 0.0;
+	jointData.Q_tar[1] = 0.0;
+
+	SET_SYSTEM_MEMORY("JointData", jointData);
+
+	m_editTarPos1.SetWindowTextA("0");
+	m_editTarPos2.SetWindowTextA("0");
+
+	m_editTarVel.SetWindowTextA("0");
+
+	m_editTarTorq.SetWindowTextA("0");
+
+	m_editTarX.SetWindowTextA("0.0");
+	m_editTarY.SetWindowTextA("0.0");
+	m_editTarZ.SetWindowTextA("2.0");
+
 }
 
 
@@ -345,6 +396,34 @@ void CRobotExp_4Dlg::OnBnClickedButton2()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	//foward button
+
+	char cTmp[10];
+	double dTmp[2];
+	m_editTarPos1.GetWindowTextA(cTmp, 10);
+	dTmp[0] = atof(cTmp);
+	m_editTarPos2.GetWindowTextA(cTmp, 10);
+	dTmp[1] = atof(cTmp);
+
+	DataType_t jointData;
+	GET_SYSTEM_MEMORY("JointData", jointData);
+
+	jointData.Q_tar[0] = dTmp[0] * DEG2RAD;
+	jointData.Q_tar[1] = dTmp[1] * DEG2RAD;
+
+	GET_SYSTEM_MEMORY("JointData", jointData);
+
+	double dPos[3] = { 0, 0, 0 };
+
+	SolveForwardKinematics(dTmp[0], dTmp[1], dPos);
+
+	char pszTmp[512];
+
+	sprintf_s(pszTmp, "%.2f", dPos[0]);
+	m_editTarX.SetWindowTextA(pszTmp);
+	sprintf_s(pszTmp, "%.2f", dPos[1]);
+	m_editTarY.SetWindowTextA(pszTmp);
+	sprintf_s(pszTmp, "%.2f", dPos[2]);
+	m_editTarZ.SetWindowTextA(pszTmp);
 }
 
 
@@ -352,6 +431,32 @@ void CRobotExp_4Dlg::OnBnClickedButton3()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	// backward button
+	char cTmp[10];
+	double dTmp[3];
+	m_editTarX.GetWindowTextA(cTmp, 10);
+	dTmp[0] = atof(cTmp);
+	m_editTarY.GetWindowTextA(cTmp, 10);
+	dTmp[1] = atof(cTmp);
+	m_editTarZ.GetWindowTextA(cTmp, 10);
+	dTmp[2] = atof(cTmp);
+
+	double dAngle[2] = { 0, 0 };
+	SolveInverseKinematics(dTmp[0], dTmp[1], dTmp[2], dAngle);
+
+	char pszTmp[512];
+	sprintf_s(pszTmp, "%.2f", dAngle[0]);
+	m_editTarPos1.SetWindowTextA(pszTmp);
+	sprintf_s(pszTmp, "%.2f", dAngle[1]);
+	m_editTarPos2.SetWindowTextA(pszTmp);
+
+	DataType_t jointData;
+	GET_SYSTEM_MEMORY("JointData", jointData);
+
+	jointData.Q_tar[0] = dAngle[0];
+	jointData.Q_tar[1] = dAngle[1];
+
+	SET_SYSTEM_MEMORY("JointData", jointData);
+
 }
 
 

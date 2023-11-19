@@ -127,8 +127,44 @@ void nearCB(void* data, dGeomID o1, dGeomID o2) {
 
 void SimLoopDrawStuff(int pause)
 {
+	//TO DO
+	DataType_t jointData;
+	GET_SYSTEM_MEMORY("JointData", jointData);
+
+	g_tar_q[0] = jointData.Q_tar[0];
+	g_tar_q[1] = jointData.Q_tar[1];
+
+	jointData.Q_cur[0] = g_cur_q[0];
+	jointData.Q_cur[1] = g_cur_q[1];
+
+	SET_SYSTEM_MEMORY("JointData", jointData);
+
+	if (g_tar_q[0] >= 360.0 * DEG2RAD) g_tar_q[0] -= 360.0*DEG2RAD;
+	if (g_tar_q[0] <= -360.0 * DEG2RAD) g_tar_q[0] += 360.0*DEG2RAD;
+
+	PControl();
+
+	dReal dR, dLength;
+
+	dsSetColor(0, 1, 0);
+	dGeomCapsuleGetParams(g_oObj[0].geom, &dR, &dLength);
+	dsDrawCapsuleD(dBodyGetPosition(g_oObj[0].body), dBodyGetRotation(g_oObj[0].body), (float)dLength, (float)dR);
+
+	dsSetColor(0, 0, 1);
+	dGeomCapsuleGetParams(g_oObj[1].geom, &dR, &dLength);
+	dsDrawCapsuleD(dBodyGetPosition(g_oObj[1].body), dBodyGetRotation(g_oObj[1].body), (float)dLength, (float)dR);
+
+
+	dsSetColor(1, 1, 1);
+	dGeomCapsuleGetParams(g_oObj[2].geom, &dR, &dLength);
+	dsDrawCapsuleD(dBodyGetPosition(g_oObj[2].body), dBodyGetRotation(g_oObj[2].body), (float)dLength, (float)dR);
+
+	double dt = 0.01;
+	dWorldStep(g_World, dt);
+
 	//page 6
 	//TO DO
+	/*
 	dSpaceCollide(g_Space, 0, &nearCB);
 	
 	PControl();
@@ -150,6 +186,7 @@ void SimLoopDrawStuff(int pause)
 	*/
 
 	// for visualization
+	/*
 	dsSetColor(0., 0.4, 0.4);
 	dGeomCapsuleGetParams(g_oObj[0].geom, &r, &length);	//set capsule params load from g_oObj
 	dsDrawCapsuleD(dBodyGetPosition(g_oObj[0].body), dBodyGetRotation(g_oObj[0].body), (float)length, (float)r);	//load geom from init robot function : type casted
@@ -161,6 +198,7 @@ void SimLoopDrawStuff(int pause)
 	dsSetColor(0.5, 0., 0.7);
 	dGeomCapsuleGetParams(g_oObj[2].geom, &r, &length);	//set capsule params load from g_oObj
 	dsDrawCapsuleD(dBodyGetPosition(g_oObj[2].body), dBodyGetRotation(g_oObj[2].body), (float)length, (float)r);	//load geom from init robot function : type casted
+	*/
 }
 
 
