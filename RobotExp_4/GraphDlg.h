@@ -1,6 +1,24 @@
 #pragma once
 #include "NTGraph.h"
-#include "COCX.h"
+
+
+#define RED        RGB(127,  0,  0)
+
+#define GREEN      RGB(  0,127,  0)
+
+#define BLUE       RGB(  0,  0,127)
+
+#define LIGHTRED   RGB(255,  0,  0)
+
+#define LIGHTGREEN RGB(  0,255,  0)
+
+#define LIGHTBLUE  RGB(  0,  0,255)
+
+#define BLACK      RGB(  0,  0,  0)
+
+#define WHITE      RGB(255,255,255)
+
+#define GRAY       RGB(192,192,192)
 
 
 // CGraphDlg 대화 상자입니다.
@@ -24,8 +42,10 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 
-	COCX m_ntgPos;
-	COCX m_ntgVel;
-	COCX m_ntgTorque;
+	CNTGraph m_ntgPos;
+	CNTGraph m_ntgVel;
+	CNTGraph m_ntgTorque;
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	void InitNTGraph();
+	double m_Dcnt;
 };

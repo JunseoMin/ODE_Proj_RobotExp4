@@ -90,7 +90,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -192,6 +192,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="COCX.h" />
     <ClInclude Include="Comm.h" />
     <ClInclude Include="CommWork.h" />
     <ClInclude Include="DataType.h" />
@@ -213,6 +214,7 @@
     <ClInclude Include="_Picture.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="COCX.cpp" />
     <ClCompile Include="Comm.cpp" />
     <ClCompile Include="CommWork.cpp" />
     <ClCompile Include="DeviceListReader.cpp" />
