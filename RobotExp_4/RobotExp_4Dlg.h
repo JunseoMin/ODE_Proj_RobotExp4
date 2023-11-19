@@ -3,7 +3,9 @@
 //
 
 #pragma once
-
+#include "Comm.h"
+#include "CommWork.h"
+#include "DeviceListReader.h"
 
 // CRobotExp_4Dlg 대화 상자
 class CRobotExp_4Dlg : public CDialogEx
@@ -28,6 +30,7 @@ public:
 // 구현입니다.
 protected:
 	HICON m_hIcon;
+	CComm m_comm;
 
 	// 생성된 메시지 맵 함수
 	virtual BOOL OnInitDialog();
@@ -35,4 +38,17 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnBnClickedCheck1();
+	CComboBox m_ComboPort;
+	CComboBox m_ComboBaud;
+	CButton m_CheckOpen;
+	afx_msg void OnCbnDropdownComboPort();
+	afx_msg void OnBnClickedCheck1Open();
+	CEdit m_EditSend;
+	afx_msg void OnEnChangeEditRecv();
+	CEdit m_EditRecv;
+	afx_msg void OnBnClickedBtnSend();
+	afx_msg void OnBnClickedBtnClear();
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
 };

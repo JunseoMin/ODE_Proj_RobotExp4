@@ -60,12 +60,24 @@ CRobotExp_4Dlg::CRobotExp_4Dlg(CWnd* pParent /*=NULL*/)
 void CRobotExp_4Dlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_COMBO_PORT, m_ComboPort);
+	DDX_Control(pDX, IDC_COMBO_BAUD, m_ComboBaud);
+	DDX_Control(pDX, IDC_CHECK1_OPEN, m_CheckOpen);
+	DDX_Control(pDX, IDC_EDIT_SEND, m_EditSend);
+	DDX_Control(pDX, IDC_EDIT_RECV, m_EditRecv);
 }
 
 BEGIN_MESSAGE_MAP(CRobotExp_4Dlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+//	ON_BN_CLICKED(IDC_CHECK1, &CRobotExp_4Dlg::OnBnClickedCheck1)
+	ON_CBN_DROPDOWN(IDC_COMBO_PORT, &CRobotExp_4Dlg::OnCbnDropdownComboPort)
+	ON_BN_CLICKED(IDC_CHECK1_OPEN, &CRobotExp_4Dlg::OnBnClickedCheck1Open)
+	ON_EN_CHANGE(IDC_EDIT_RECV, &CRobotExp_4Dlg::OnEnChangeEditRecv)
+	ON_BN_CLICKED(IDC_BTN_SEND, &CRobotExp_4Dlg::OnBnClickedBtnSend)
+	ON_BN_CLICKED(IDC_BTN_CLEAR, &CRobotExp_4Dlg::OnBnClickedBtnClear)
+	ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 
@@ -101,6 +113,7 @@ BOOL CRobotExp_4Dlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 작은 아이콘을 설정합니다.
 
 	// TODO: 여기에 추가 초기화 작업을 추가합니다.
+	SetTimer(1001, 33, NULL);
 
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
@@ -193,4 +206,111 @@ void CRobotExp_4Dlg::SolveInverseKinematics(double dX, double dY, double dZ, dou
 	pdAngle[0] = q1 * RAD2DEG;
 	// theta 2
 	pdAngle[1] = q2 * RAD2DEG;
+}
+
+void CRobotExp_4Dlg::OnBnClickedCheck1()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+}
+
+
+void CRobotExp_4Dlg::OnCbnDropdownComboPort()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CDeviceListReader reader;
+	std::vector<std::string> list;
+
+	//Combo box initialization
+	m_ComboPort.ResetContent();
+
+	// get serial tool list
+	reader.UpdateDeviceList("SERIALCOMM");
+	reader.GetDeviceList(list);
+
+	// add to combobox
+	for (int i = 0; i < list.size(); i++)
+	{
+		m_ComboPort.AddString(list[i].c_str());
+	}
+
+}
+
+
+void CRobotExp_4Dlg::OnBnClickedCheck1Open()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	//check button
+	if (m_CheckOpen.GetCheck())
+	{
+		CString port, baud;
+		m_ComboPort.GetLBText(m_ComboPort.GetCurSel(), port);
+		m_ComboBaud.GetLBText(m_ComboBaud.GetCurSel(), baud);
+		if (m_comm.Open(port.GetBuffer(),atoi(baud.GetBuffer())))
+		{
+			m_CheckOpen.SetWindowText("Close");
+		}
+		else
+		{
+			AfxMessageBox("Can't open port");
+			m_CheckOpen.SetCheck(false);
+		}
+	}
+	else
+	{
+		m_comm.Close();
+		m_CheckOpen.SetWindowText("Open");
+	}
+}
+
+
+void CRobotExp_4Dlg::OnEnChangeEditRecv()
+{
+	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
+	// CDialogEx::OnInitDialog() 함수를 재지정 
+	//하고 마스크에 OR 연산하여 설정된 ENM_CHANGE 플래그를 지정하여 CRichEditCtrl().SetEventMask()를 호출하지 않으면
+	// 이 알림 메시지를 보내지 않습니다.
+
+	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+}
+
+
+void CRobotExp_4Dlg::OnBnClickedBtnSend()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	if (m_comm.isOpen())
+	{
+		CString str;
+		m_EditSend.GetWindowText(str);
+
+		int size = m_comm.Write(str.GetBuffer(), str.GetLength());
+
+		m_EditSend.SetWindowText("");
+	}
+}
+
+
+void CRobotExp_4Dlg::OnBnClickedBtnClear()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_EditRecv.SetWindowText("");
+}
+
+
+void CRobotExp_4Dlg::OnTimer(UINT_PTR nIDEvent)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	if (m_comm.isOpen())
+	{
+		CString str;
+		char buf[4096] = { 0, };
+
+		m_EditRecv.GetWindowText(str);
+		str == buf;
+
+		m_EditRecv.SetWindowText(str);
+	}
+
+	CDialogEx::OnTimer(nIDEvent);
 }
