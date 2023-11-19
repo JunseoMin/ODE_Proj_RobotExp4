@@ -95,6 +95,11 @@ void nearCB(void* data, dGeomID o1, dGeomID o2) {
 
 	if ((g_Ground == o1) || (g_Ground == o2))	// if object collide with ground
 	{
+		if ((o1 == g_oObj[0].geom) && (o2 == g_Ground) || (o1 == g_Ground) && (o2 == g_oObj[0].geom))
+		{
+			// obj 1 collide with ground (fixed)
+			return;
+		}
 		bool isGround = ((g_Ground == o1) || (g_Ground == o2));
 		int n = dCollide(o1, o2, N, &contact[0].geom, sizeof(dContact));
 
@@ -124,7 +129,7 @@ void SimLoopDrawStuff(int pause)
 {
 	//page 6
 	//TO DO
-	//dSpaceCollide(g_Space, 0, &nearCB);
+	dSpaceCollide(g_Space, 0, &nearCB);
 	
 	PControl();
 
@@ -143,7 +148,6 @@ void SimLoopDrawStuff(int pause)
 		dsDrawCapsuleD(dBodyGetPosition(g_oObj[i].body), dBodyGetRotation(g_oObj[i].body), (float)length, (float)r);	//load geom from init robot function : type casted
 	}
 	*/
-
 
 	// for visualization
 	dsSetColor(0., 0.4, 0.4);
@@ -234,7 +238,7 @@ void InitRobot()
 
 	// fixed axis setting
 	g_oJoint[0] = dJointCreateFixed(g_World, 0);	//set gobj[0] fixed joint
-	dJointAttach(g_oJoint[0], 0, g_oObj[0].body);	// if second arg is 0, attach with world
+	dJointAttach(g_oJoint[0], g_oObj[0].body, 0);	// if second arg is 0, attach with world
 	dJointSetFixed(g_oJoint[0]);
 
 
@@ -247,7 +251,6 @@ void InitRobot()
 		dJointSetHingeAxis(g_oJoint[i], axis_x[i], axis_y[i], axis_z[i]);
 	}
 
-
 }
 
 void PControl()	//hindge joint Pcontrol
@@ -259,7 +262,8 @@ void PControl()	//hindge joint Pcontrol
 	{
 		g_cur_q[i] = dJointGetHingeAngle(g_oJoint[i]);
 
-		a_error_q[i] = g_tar_q[i] - g_cur_q[i];
+		a_error_q[i] = g_tar_q[i] - g_cur_q[i]; // feedback
+
 		//gymbol lock control
 		if (g_tar_q[i] - g_cur_q[i] > 180.0*DEG2RAD)
 		{
