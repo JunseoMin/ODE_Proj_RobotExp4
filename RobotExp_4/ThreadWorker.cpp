@@ -170,6 +170,13 @@ public:
 		return _period;
 	}
 
+	CWorkBase* GetWork()
+	{
+		return _poWork;
+	}
+
+
+
 protected:
 
 private:
@@ -288,4 +295,9 @@ void CThreadedWorker::SetPeriod(double t) {
 double CThreadedWorker::GetPeriod() {
 
 	return _poWorker->GetPeriod();
+}
+
+CWorkBase* CThreadedWorker::GetWork()
+{
+	return _poWorker->GetWork();
 }

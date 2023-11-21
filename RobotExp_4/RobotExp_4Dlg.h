@@ -6,7 +6,13 @@
 #include "Comm.h"
 #include "CommWork.h"
 #include "DeviceListReader.h"
+
 #include "GraphDlg.h"
+
+#include "ThreadWorker.h"
+#include "SharedMemory.h"
+#include "SystemMemory.h"
+#include "DataType.h"
 
 // CRobotExp_4Dlg 대화 상자
 class CRobotExp_4Dlg : public CDialogEx
@@ -32,6 +38,7 @@ public:
 protected:
 	HICON m_hIcon;
 	CComm m_comm;
+	CThreadedWorker _commWorker;
 
 	// 생성된 메시지 맵 함수
 	virtual BOOL OnInitDialog();
@@ -75,4 +82,5 @@ private:
 	CGraphDlg* m_pGraphDlg;
 public:
 	afx_msg void OnBnClickedButtonGraph();
+	afx_msg void OnBnClickedButtonSet();
 };

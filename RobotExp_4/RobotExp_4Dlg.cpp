@@ -98,6 +98,7 @@ BEGIN_MESSAGE_MAP(CRobotExp_4Dlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON3, &CRobotExp_4Dlg::OnBnClickedButton3)
 	ON_WM_DESTROY()
 	ON_BN_CLICKED(IDC_BUTTON_GRAPH, &CRobotExp_4Dlg::OnBnClickedButtonGraph)
+	ON_BN_CLICKED(IDC_BUTTON_Set, &CRobotExp_4Dlg::OnBnClickedButtonSet)
 END_MESSAGE_MAP()
 
 
@@ -135,20 +136,27 @@ BOOL CRobotExp_4Dlg::OnInitDialog()
 	// TODO: 여기에 추가 초기화 작업을 추가합니다.
 	SetTimer(1001, 33, NULL);
 
+	_commWorker.SetPeriod(0.01);
+	_commWorker.SetWork(CreateWork<CCommWork>("CommWork"));
+
+	
 	m_editTarPos1.SetWindowTextA("0");
-	m_editTarPos2.SetWindowTextA("0");
+	m_editTarPos1.SetWindowTextA("0");
 
-	m_editTarVel.SetWindowTextA("0");
+	m_editTarVel.SetWindowTextA("10");
+	m_editTarTorq.SetWindowTextA("0.1");
 
-	m_editTarTorq.SetWindowTextA("0");
 
 	m_editTarX.SetWindowTextA("0.0");
 	m_editTarY.SetWindowTextA("0.0");
 	m_editTarZ.SetWindowTextA("0.0");
 	
-	m_pGraphDlg = new CGraphDlg();
-	m_pGraphDlg->Create(IDD_GRAPH_DIALOG);
+	//m_pGraphDlg = new CGraphDlg();
+	//m_pGraphDlg->Create(IDD_GRAPH_DIALOG);
+	
 
+
+	
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
 
@@ -278,10 +286,14 @@ void CRobotExp_4Dlg::OnBnClickedCheck1Open()
 	if (m_CheckOpen.GetCheck())
 	{
 		CString port, baud;
+
 		m_ComboPort.GetLBText(m_ComboPort.GetCurSel(), port);
 		m_ComboBaud.GetLBText(m_ComboBaud.GetCurSel(), baud);
-		if (m_comm.Open(port.GetBuffer(),atoi(baud.GetBuffer())))
+		int nTmp = atoi(baud.GetBuffer());
+
+		if (((CCommWork*)_commWorker.GetWork())->OpenPort(port.GetBuffer(), nTmp))
 		{
+			_commWorker.StartWork();
 			m_CheckOpen.SetWindowText("Close");
 		}
 		else
@@ -292,7 +304,8 @@ void CRobotExp_4Dlg::OnBnClickedCheck1Open()
 	}
 	else
 	{
-		m_comm.Close();
+		_commWorker.StopWork();
+		((CCommWork*)_commWorker.GetWork())->ClosePort();
 		m_CheckOpen.SetWindowText("Open");
 	}
 }
@@ -312,7 +325,7 @@ void CRobotExp_4Dlg::OnEnChangeEditRecv()
 void CRobotExp_4Dlg::OnBnClickedBtnSend()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-
+	/*
 	if (m_comm.isOpen())
 	{
 		CString str;
@@ -322,6 +335,9 @@ void CRobotExp_4Dlg::OnBnClickedBtnSend()
 
 		m_EditSend.SetWindowText("");
 	}
+	*/
+
+
 }
 
 
@@ -335,6 +351,7 @@ void CRobotExp_4Dlg::OnBnClickedBtnClear()
 void CRobotExp_4Dlg::OnTimer(UINT_PTR nIDEvent)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	/*
 	DataType_t jointData;
 	GET_SYSTEM_MEMORY("JointData", jointData);
 
@@ -352,7 +369,7 @@ void CRobotExp_4Dlg::OnTimer(UINT_PTR nIDEvent)
 	m_editCurY.SetWindowTextA(pszTmp);
 	sprintf_s(pszTmp, "%.2lf", dTemp[2]);
 	m_editCurZ.SetWindowTextA(pszTmp);
-
+	*/
 	
 	/*if (m_comm.isOpen())
 	{
@@ -365,6 +382,40 @@ void CRobotExp_4Dlg::OnTimer(UINT_PTR nIDEvent)
 		m_EditRecv.SetWindowText(str);
 	}
 	*/
+
+	ControlData_t motor_data;
+	DataType_t ode_data;
+
+	GET_SYSTEM_MEMORY("JointData", ode_data);
+	GET_SYSTEM_MEMORY("CommWork_Controller_Current",motor_data);
+
+	CString str;
+
+	str.Format("%.4f", ode_data.Q_cur[1] * RAD2DEG);
+	m_editCurPos2.SetWindowText(str);
+
+	str.Format("%.4f", motor_data.position * RAD2DEG);
+	m_editCurPos1.SetWindowText(str);
+
+	str.Format("%.4f", motor_data.velocity* RAD2DEG);
+	m_editCurVel.SetWindowText(str);
+
+	str.Format("%.4f", motor_data.current * 0.0683);
+	m_editCurTorq.SetWindowText(str);
+
+	//Foward Kinematics
+	double Pcur[3] = { 0, };
+	SolveForwardKinematics(ode_data.Q_cur[0], ode_data.Q_cur[1], Pcur);
+
+	str.Format("%.4f", Pcur[0]);
+	m_editCurX.SetWindowText(str);
+
+	str.Format("%.4f", Pcur[1]);
+	m_editCurY.SetWindowText(str);
+
+	str.Format("%.4f", Pcur[2]);
+	m_editCurZ.SetWindowText(str);
+
 	CDialogEx::OnTimer(nIDEvent);
 }
 
@@ -373,9 +424,30 @@ void CRobotExp_4Dlg::OnBnClickedButton1()
 {
 	// init button
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	DataType_t jointData;
-	GET_SYSTEM_MEMORY("JointData", jointData);
+	m_editTarPos1.SetWindowTextA("0");
+	m_editTarPos1.SetWindowTextA("0");
 
+	m_editTarVel.SetWindowTextA("10");
+	m_editTarTorq.SetWindowTextA("0.1");
+
+	m_editTarX.SetWindowTextA("0.0");
+	m_editTarY.SetWindowTextA("0.0");
+	m_editTarZ.SetWindowTextA("0.0");
+
+	ControlData_t motor_data;
+	DataType_t ode_data;
+
+	GET_SYSTEM_MEMORY("JointData", ode_data);
+
+	ode_data.Q_tar[0] = ode_data.Q_tar[1] = 0.;
+	SET_SYSTEM_MEMORY("JointData", ode_data);
+
+	motor_data.position = 0.;
+	motor_data.velocity = 10 * DEG2RAD;
+	motor_data.current = 0.1 / 0.0683;
+	SET_SYSTEM_MEMORY("CommWork_Controller_Current", motor_data);
+	
+	/*
 	jointData.Q_tar[0] = 0.0;
 	jointData.Q_tar[1] = 0.0;
 
@@ -391,14 +463,14 @@ void CRobotExp_4Dlg::OnBnClickedButton1()
 	m_editTarX.SetWindowTextA("0.0");
 	m_editTarY.SetWindowTextA("0.0");
 	m_editTarZ.SetWindowTextA("2.0");
-
+	*/
 }
 
 
 void CRobotExp_4Dlg::OnBnClickedButton2()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	//foward button
+	// foward button
 
 	char cTmp[10];
 	double dTmp[2];
@@ -479,4 +551,36 @@ void CRobotExp_4Dlg::OnBnClickedButtonGraph()
 	if (bCheck) m_pGraphDlg->ShowWindow(SW_HIDE);
 	else m_pGraphDlg->ShowWindow(SW_SHOW);
 	
+}
+
+
+void CRobotExp_4Dlg::OnBnClickedButtonSet()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	ControlData_t motor_data;
+	DataType_t ode_data;
+
+	GET_SYSTEM_MEMORY("JointData", ode_data);
+
+	CString str;
+	m_editCurPos1.GetWindowText(str);
+	ode_data.Q_tar[0] = atof(str.GetBuffer())*DEG2RAD;
+
+	m_editCurPos2.GetWindowText(str);
+	ode_data.Q_tar[1] = atof(str.GetBuffer())*DEG2RAD;
+
+
+	m_editTarPos1.GetWindowText(str);
+	motor_data.position = atof(str.GetBuffer())*DEG2RAD;
+
+	m_editTarVel.GetWindowText(str);
+	motor_data.velocity = atof(str.GetBuffer())*DEG2RAD;
+
+	m_editTarTorq.GetWindowText(str);
+	motor_data.current = atof(str.GetBuffer()) / 0.0683;
+
+	SET_SYSTEM_MEMORY("JointData", ode_data);
+	SET_SYSTEM_MEMORY("CommWork_Controller_Current", motor_data);
+
+	/////////////////////////////////////////////
 }

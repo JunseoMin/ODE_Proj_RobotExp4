@@ -46,7 +46,13 @@ void CCommWork::_execute() {
 
 	GET_SYSTEM_MEMORY(_memname_tar, _target);
 
+	static int mode, readSize = 0, checkSize;
+
 	//TO DO
+	if (_comm.isOpen())
+	{
+		// code space
+	}
 
 	SET_SYSTEM_MEMORY(_memname_cur, _current);
 }

@@ -8,17 +8,10 @@
 
 #define BLUE       RGB(  0,  0,127)
 
-#define LIGHTRED   RGB(255,  0,  0)
-
-#define LIGHTGREEN RGB(  0,255,  0)
-
-#define LIGHTBLUE  RGB(  0,  0,255)
-
 #define BLACK      RGB(  0,  0,  0)
 
 #define WHITE      RGB(255,255,255)
 
-#define GRAY       RGB(192,192,192)
 
 
 // CGraphDlg 대화 상자입니다.
