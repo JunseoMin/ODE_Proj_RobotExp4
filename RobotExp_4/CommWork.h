@@ -60,6 +60,13 @@ private:
 	ControlData_t _target, _current;
 
 	CComm _comm;
+
+	unsigned char _recvBuf[4096];
+	unsigned char writeBuf[4096];
+
+	Packet_t _sendPacket;
+	Packet_t _packet;
+
 };
 
 #endif
