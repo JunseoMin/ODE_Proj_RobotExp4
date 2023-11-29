@@ -18,6 +18,8 @@ typedef struct _packet_data{
 	int32_t pos;
 	int32_t velo;
 	int32_t cur;
+	
+	//control data
 	int32_t Kp_cur;
 	int32_t Ki_cur;
 	int32_t Kp_vel;
