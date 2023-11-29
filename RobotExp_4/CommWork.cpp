@@ -62,15 +62,15 @@ void CCommWork::_execute() {
 		_sendPacket.data.velo = _target.velocity * 1000;
 		_sendPacket.data.cur = _target.current * 1000;
 
-		/*
-		** for each control gains **
-		_sendPacket.data.kp_cur = _target.Kp_cur * 1000;
-		_sendPacket.data.ki_cur = _target.Ki_cur * 1000;
-		_sendPacket.data.kp_vel = _target.Kp_vel * 1000;
-		_sendPacket.data.ki_vel = _target.Ki_vel * 1000;
-		_sendPacket.data.kp_pos = _target.Kp_pos * 1000;
-		_sendPacket.data.kd_pos = _target.Kd_pos * 1000;
-		*/
+		
+		/** for each control gains **/
+		_sendPacket.data.Kp_cur = _target.Kp_cur * 1000;
+		_sendPacket.data.Ki_cur = _target.Ki_cur * 1000;
+		_sendPacket.data.Kp_vel = _target.Kp_V * 1000;
+		_sendPacket.data.Ki_vel = _target.Ki_V * 1000;
+		_sendPacket.data.Kp_pos = _target.Kp_P * 1000;
+		_sendPacket.data.Kd_pos = _target.Kd_P * 1000;
+		
 
 		for (int i = 8; i < sizeof(Packet_t); i++)
 			_sendPacket.data.check += _sendPacket.buffer[i];

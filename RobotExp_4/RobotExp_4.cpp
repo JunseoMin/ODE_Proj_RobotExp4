@@ -1,6 +1,7 @@
 ﻿
 // RobotExp_4.cpp : ���� ���α׷��� ���� Ŭ���� ������ �����մϴ�.
 // NEW FILE
+// setting memory data, initialize whole code
 
 #include "stdafx.h"
 #include "RobotExp_4.h"

@@ -69,9 +69,9 @@ BEGIN_MESSAGE_MAP(CRobotExp_4Dlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BTN_SEND, &CRobotExp_4Dlg::OnBnClickedBtnSend)
 	ON_BN_CLICKED(IDC_BTN_CLEAR, &CRobotExp_4Dlg::OnBnClickedBtnClear)
 	ON_WM_TIMER()
-	ON_BN_CLICKED(IDC_BUTTON1, &CRobotExp_4Dlg::OnBnClickedButton1)
-	ON_BN_CLICKED(IDC_BUTTON2, &CRobotExp_4Dlg::OnBnClickedButton2)
-	ON_BN_CLICKED(IDC_BUTTON3, &CRobotExp_4Dlg::OnBnClickedButton3)
+	ON_BN_CLICKED(IDC_BUTTON1, &CRobotExp_4Dlg::OnBnClickedButton1)	//init button
+	ON_BN_CLICKED(IDC_BUTTON2, &CRobotExp_4Dlg::OnBnClickedButton2)	//set button
+	ON_BN_CLICKED(IDC_BUTTON3, &CRobotExp_4Dlg::OnBnClickedButton3)	//
 	ON_WM_DESTROY()
 	ON_BN_CLICKED(IDC_BUTTON_GRAPH, &CRobotExp_4Dlg::OnBnClickedButtonGraph)
 	ON_BN_CLICKED(IDC_BUTTON_Set, &CRobotExp_4Dlg::OnBnClickedButtonSet)
@@ -443,41 +443,41 @@ void CRobotExp_4Dlg::OnBnClickedButton2()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	// foward button
 
-	char cTmp[10];
-	double dTmp[2];
-	m_editTarPos1.GetWindowTextA(cTmp, 10);
-	dTmp[0] = atof(cTmp);
-	m_editTarPos2.GetWindowTextA(cTmp, 10);
-	dTmp[1] = atof(cTmp);
+	char _tempChar[10];
+	double _tempDouble[2];
+	m_editTarPos1.GetWindowTextA(_tempChar, 10);
+	_tempDouble[0] = atof(_tempChar);
+	m_editTarPos2.GetWindowTextA(_tempChar, 10);
+	_tempDouble[1] = atof(_tempChar);
 
 	DataType_t jointData;
 	GET_SYSTEM_MEMORY("JointData", jointData);
 
 	// Gimbol lock exception
-	if (dTmp[0] >= 360)	dTmp[0] -= 360;
-	else if (dTmp[0] == 180) dTmp[0] = dTmp[0] - 0.01;
-	else if (dTmp[0] > 180) dTmp[0] -= 360;
+	if (_tempDouble[0] >= 360)	_tempDouble[0] -= 360;
+	else if (_tempDouble[0] == 180) _tempDouble[0] = _tempDouble[0] - 0.01;
+	else if (_tempDouble[0] > 180) _tempDouble[0] -= 360;
 
-	if (dTmp[0] <= -360) dTmp[0] += 360;
-	else if (dTmp[0] == -180) dTmp[0] = dTmp[0] + 0.01;
-	else if (dTmp[0] < -180) dTmp[0] += 360;
+	if (_tempDouble[0] <= -360) _tempDouble[0] += 360;
+	else if (_tempDouble[0] == -180) _tempDouble[0] = _tempDouble[0] + 0.01;
+	else if (_tempDouble[0] < -180) _tempDouble[0] += 360;
 
-	jointData.Q_tar[0] = dTmp[0];
+	jointData.Q_tar[0] = _tempDouble[0];
 
-	if (dTmp[1] >= 360)	dTmp[1] -= 360;
-	else if (dTmp[1] == 180) dTmp[1] = dTmp[1] - 0.01;
-	else if (dTmp[1] > 180) dTmp[1] -= 360;
+	if (_tempDouble[1] >= 360)	_tempDouble[1] -= 360;
+	else if (_tempDouble[1] == 180) _tempDouble[1] = _tempDouble[1] - 0.01;
+	else if (_tempDouble[1] > 180) _tempDouble[1] -= 360;
 
-	if (dTmp[1] <= -360) dTmp[1] += 360;
-	else if (dTmp[1] == -180) dTmp[1] = dTmp[1] + 0.01;
-	else if (dTmp[1] < -180) dTmp[1] += 360;
-	jointData.Q_tar[1] = dTmp[1];
+	if (_tempDouble[1] <= -360) _tempDouble[1] += 360;
+	else if (_tempDouble[1] == -180) _tempDouble[1] = _tempDouble[1] + 0.01;
+	else if (_tempDouble[1] < -180) _tempDouble[1] += 360;
+	jointData.Q_tar[1] = _tempDouble[1];
 
 	SET_SYSTEM_MEMORY("JointData", jointData);
 
 	double dPos[3] = { 0, 0, 0 };
 
-	SolveForwardKinematics(dTmp[0], dTmp[1], dPos);
+	SolveForwardKinematics(_tempDouble[0], _tempDouble[1], dPos);
 
 	char pszTmp[512];
 
@@ -494,17 +494,17 @@ void CRobotExp_4Dlg::OnBnClickedButton3()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	// backward button
-	char cTmp[10];
-	double dTmp[3];
-	m_editTarX.GetWindowTextA(cTmp, 10);
-	dTmp[0] = atof(cTmp);
-	m_editTarY.GetWindowTextA(cTmp, 10);
-	dTmp[1] = atof(cTmp);
-	m_editTarZ.GetWindowTextA(cTmp, 10);
-	dTmp[2] = atof(cTmp);
+	char _tempChar[10];
+	double _tempDouble[3];
+	m_editTarX.GetWindowTextA(_tempChar, 10);
+	_tempDouble[0] = atof(_tempChar);
+	m_editTarY.GetWindowTextA(_tempChar, 10);
+	_tempDouble[1] = atof(_tempChar);
+	m_editTarZ.GetWindowTextA(_tempChar, 10);
+	_tempDouble[2] = atof(_tempChar);
 
 	double dAngle[2] = { 0, 0 };
-	SolveInverseKinematics(dTmp[0], dTmp[1], dTmp[2], dAngle);
+	SolveInverseKinematics(_tempDouble[0], _tempDouble[1], _tempDouble[2], dAngle);
 
 	char pszTmp[512];
 	sprintf_s(pszTmp, "%.2f", dAngle[0]);

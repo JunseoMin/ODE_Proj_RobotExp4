@@ -36,6 +36,12 @@ typedef struct _packet_data {
 	int pos;
 	int velo;
 	int cur;
+	int Kp_cur;
+	int Ki_cur;
+	int Kp_vel;
+	int Ki_vel;
+	int Kp_pos;
+	int Kd_pos;
 
 }Packet_data_t;
 
