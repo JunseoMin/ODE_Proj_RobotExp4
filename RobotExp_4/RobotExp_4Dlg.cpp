@@ -58,30 +58,6 @@ CRobotExp_4Dlg::CRobotExp_4Dlg(CWnd* pParent /*=NULL*/)
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
-void CRobotExp_4Dlg::DoDataExchange(CDataExchange* pDX)
-{
-	CDialogEx::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_COMBO_PORT, m_ComboPort);
-	DDX_Control(pDX, IDC_COMBO_BAUD, m_ComboBaud);
-	DDX_Control(pDX, IDC_CHECK1_OPEN, m_CheckOpen);
-	DDX_Control(pDX, IDC_EDIT_SEND, m_EditSend);
-	DDX_Control(pDX, IDC_EDIT_RECV, m_EditRecv);
-	DDX_Control(pDX, IDC_EDIT_CUR_POS_1, m_editCurPos1);
-	DDX_Control(pDX, IDC_EDIT_TAR_POS_1, m_editTarPos1);
-	DDX_Control(pDX, IDC_EDIT_TAR_POS_2, m_editTarPos2);
-	DDX_Control(pDX, IDC_EDIT_CUR_POS_2, m_editCurPos2);
-	DDX_Control(pDX, IDC_EDIT_TAR_VEL, m_editTarVel);
-	DDX_Control(pDX, IDC_EDIT_CUR_VEL, m_editCurVel);
-	DDX_Control(pDX, IDC_EDIT_TAR_TOR, m_editTarTorq);
-	DDX_Control(pDX, IDC_EDIT_CUR_TOR, m_editCurTorq);
-	DDX_Control(pDX, IDC_EDIT_TAR_X, m_editTarX);
-	DDX_Control(pDX, IDC_EDIT_CUR_X, m_editCurX);
-	DDX_Control(pDX, IDC_EDIT_TAR_Y, m_editTarY);
-	DDX_Control(pDX, IDC_EDIT_CUR_Y, m_editCurY);
-	DDX_Control(pDX, IDC_EDIT_TAR_Z, m_editTarZ);
-	DDX_Control(pDX, IDC_EDIT_CUR_Z, m_editCurZ);
-}
-
 BEGIN_MESSAGE_MAP(CRobotExp_4Dlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
@@ -133,30 +109,29 @@ BOOL CRobotExp_4Dlg::OnInitDialog()
 	SetIcon(m_hIcon, TRUE);			// 큰 아이콘을 설정합니다.
 	SetIcon(m_hIcon, FALSE);		// 작은 아이콘을 설정합니다.
 
-	// TODO: 여기에 추가 초기화 작업을 추가합니다.
-	SetTimer(1001, 33, NULL);
-
 	_commWorker.SetPeriod(0.01);
 	_commWorker.SetWork(CreateWork<CCommWork>("CommWork"));
-
-	
+		
 	m_editTarPos1.SetWindowTextA("0");
 	m_editTarPos1.SetWindowTextA("0");
 
 	m_editTarVel.SetWindowTextA("10");
 	m_editTarTorq.SetWindowTextA("0.1");
 
-
 	m_editTarX.SetWindowTextA("0.0");
 	m_editTarY.SetWindowTextA("0.0");
-	m_editTarZ.SetWindowTextA("0.0");
-	
-	//m_pGraphDlg = new CGraphDlg();
-	//m_pGraphDlg->Create(IDD_GRAPH_DIALOG);
-	
+	m_editTarZ.SetWindowTextA("2.0");
 
 
+	// set graph dialog button
+	m_pGraphDlg = new CGraphDlg();
+	m_pGraphDlg->Create(IDD_GRAPH_DIALOG);
 	
+	SetTimer(1001, 33, NULL);
+
+	// set data
+
+
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
 
@@ -351,38 +326,6 @@ void CRobotExp_4Dlg::OnBnClickedBtnClear()
 void CRobotExp_4Dlg::OnTimer(UINT_PTR nIDEvent)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-	/*
-	DataType_t jointData;
-	GET_SYSTEM_MEMORY("JointData", jointData);
-
-	char pszTmp[512];
-	sprintf_s(pszTmp, "%.2lf", jointData.Q_cur[0] * RAD2DEG);
-	m_editCurPos1.SetWindowTextA(pszTmp);
-	sprintf_s(pszTmp, "%.2lf", jointData.Q_cur[1] * RAD2DEG);
-	m_editCurPos2.SetWindowTextA(pszTmp);
-
-	double dTemp[3] = { 0, 0, 0 };
-	SolveForwardKinematics(jointData.Q_cur[0] * RAD2DEG, jointData.Q_cur[1] * RAD2DEG, dTemp);
-	sprintf_s(pszTmp, "%.2lf", dTemp[0]);
-	m_editCurX.SetWindowTextA(pszTmp);
-	sprintf_s(pszTmp, "%.2lf", dTemp[1]);
-	m_editCurY.SetWindowTextA(pszTmp);
-	sprintf_s(pszTmp, "%.2lf", dTemp[2]);
-	m_editCurZ.SetWindowTextA(pszTmp);
-	*/
-	
-	/*if (m_comm.isOpen())
-	{
-		CString str;
-		char buf[4096] = { 0, };
-
-		m_EditRecv.GetWindowText(str);
-		str == buf;
-
-		m_EditRecv.SetWindowText(str);
-	}
-	*/
-
 	ControlData_t motor_data;
 	DataType_t ode_data;
 
@@ -390,16 +333,23 @@ void CRobotExp_4Dlg::OnTimer(UINT_PTR nIDEvent)
 	GET_SYSTEM_MEMORY("CommWork_Controller_Current",motor_data);
 
 	CString str;
-
-	str.Format("%.4f", ode_data.Q_cur[1] * RAD2DEG);
-	m_editCurPos2.SetWindowText(str);
-
-	str.Format("%.4f", motor_data.position * RAD2DEG);
+	
+	// ODE settings
+	str.Format("%.4f", ode_data.Q_cur[0]);
 	m_editCurPos1.SetWindowText(str);
 
+	str.Format("%.4f", ode_data.Q_cur[1]);
+	m_editCurPos2.SetWindowText(str);
+
+	// 
+	//str.Format("%.4f", motor_data.position * RAD2DEG);
+	//m_editCurPos1.SetWindowText(str);
+
+	//velocity
 	str.Format("%.4f", motor_data.velocity* RAD2DEG);
 	m_editCurVel.SetWindowText(str);
 
+	//Motor Torque
 	str.Format("%.4f", motor_data.current * 0.0683);
 	m_editCurTorq.SetWindowText(str);
 
@@ -416,6 +366,9 @@ void CRobotExp_4Dlg::OnTimer(UINT_PTR nIDEvent)
 	str.Format("%.4f", Pcur[2]);
 	m_editCurZ.SetWindowText(str);
 
+	// set joint data
+	SET_SYSTEM_MEMORY("JointData", ode_data);
+
 	CDialogEx::OnTimer(nIDEvent);
 }
 
@@ -424,46 +377,64 @@ void CRobotExp_4Dlg::OnBnClickedButton1()
 {
 	// init button
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	m_editTarPos1.SetWindowTextA("0");
-	m_editTarPos1.SetWindowTextA("0");
-
-	m_editTarVel.SetWindowTextA("10");
+	m_editTarPos1.SetWindowTextA("0.0");	//set target
+	m_editTarPos2.SetWindowTextA("0.0");
+	m_editTarVel.SetWindowTextA("10.0");
 	m_editTarTorq.SetWindowTextA("0.1");
 
 	m_editTarX.SetWindowTextA("0.0");
 	m_editTarY.SetWindowTextA("0.0");
-	m_editTarZ.SetWindowTextA("0.0");
+	m_editTarZ.SetWindowTextA("2.0");
 
-	ControlData_t motor_data;
+	// gain settings
+	m_edit_Kp_cur.SetWindowTextA("1.3");		
+	m_edit_Ki_cur.SetWindowTextA("40");
+	m_edit_kp_V.SetWindowTextA("3");
+	m_edit_Ki_V.SetWindowTextA("3.5");
+	m_edit_Kp_P.SetWindowTextA("1.5");
+	m_edit_Kd_P.SetWindowTextA("0.01");
+
+	CString str;
 	DataType_t ode_data;
 
 	GET_SYSTEM_MEMORY("JointData", ode_data);
 
 	ode_data.Q_tar[0] = ode_data.Q_tar[1] = 0.;
+
 	SET_SYSTEM_MEMORY("JointData", ode_data);
 
-	motor_data.position = 0.;
-	motor_data.velocity = 10 * DEG2RAD;
-	motor_data.current = 0.1 / 0.0683;
-	SET_SYSTEM_MEMORY("CommWork_Controller_Current", motor_data);
+	ControlData_t motor_data;
+
+	m_editTarPos1.GetWindowText(str);
+	motor_data.position = atof(str.GetBuffer())*DEG2RAD;
+
+	m_editTarVel.GetWindowText(str);
+	motor_data.velocity = atof(str.GetBuffer())*DEG2RAD;
+
+	m_editTarTorq.GetWindowText(str);
+	motor_data.current = atof(str.GetBuffer())/0.0683;
+
+	// set gain by ctr data
+	m_edit_Kp_cur.GetWindowText(str);								
+	motor_data.Kp_cur = atof(str.GetBuffer());
+
+	m_edit_Ki_cur.GetWindowText(str);
+	motor_data.Ki_cur = atof(str.GetBuffer());
+
+	m_edit_kp_V.GetWindowText(str);
+	motor_data.Kp_V = atof(str.GetBuffer());
+
+	m_edit_Ki_V.GetWindowText(str);
+	motor_data.Ki_V = atof(str.GetBuffer());
+
+	m_edit_Kp_P.GetWindowText(str);
+	motor_data.Kp_P = atof(str.GetBuffer());
+
+	m_edit_Kd_P.GetWindowText(str);
+	motor_data.Kd_P = atof(str.GetBuffer());
 	
-	/*
-	jointData.Q_tar[0] = 0.0;
-	jointData.Q_tar[1] = 0.0;
-
-	SET_SYSTEM_MEMORY("JointData", jointData);
-
-	m_editTarPos1.SetWindowTextA("0");
-	m_editTarPos2.SetWindowTextA("0");
-
-	m_editTarVel.SetWindowTextA("0");
-
-	m_editTarTorq.SetWindowTextA("0");
-
-	m_editTarX.SetWindowTextA("0.0");
-	m_editTarY.SetWindowTextA("0.0");
-	m_editTarZ.SetWindowTextA("2.0");
-	*/
+	// set to memory
+	SET_SYSTEM_MEMORY("CommWork_Controller_Current", motor_data);
 }
 
 
@@ -482,10 +453,27 @@ void CRobotExp_4Dlg::OnBnClickedButton2()
 	DataType_t jointData;
 	GET_SYSTEM_MEMORY("JointData", jointData);
 
-	jointData.Q_tar[0] = dTmp[0] * DEG2RAD;
-	jointData.Q_tar[1] = dTmp[1] * DEG2RAD;
+	// Gimbol lock exception
+	if (dTmp[0] >= 360)	dTmp[0] -= 360;
+	else if (dTmp[0] == 180) dTmp[0] = dTmp[0] - 0.01;
+	else if (dTmp[0] > 180) dTmp[0] -= 360;
 
-	GET_SYSTEM_MEMORY("JointData", jointData);
+	if (dTmp[0] <= -360) dTmp[0] += 360;
+	else if (dTmp[0] == -180) dTmp[0] = dTmp[0] + 0.01;
+	else if (dTmp[0] < -180) dTmp[0] += 360;
+
+	jointData.Q_tar[0] = dTmp[0];
+
+	if (dTmp[1] >= 360)	dTmp[1] -= 360;
+	else if (dTmp[1] == 180) dTmp[1] = dTmp[1] - 0.01;
+	else if (dTmp[1] > 180) dTmp[1] -= 360;
+
+	if (dTmp[1] <= -360) dTmp[1] += 360;
+	else if (dTmp[1] == -180) dTmp[1] = dTmp[1] + 0.01;
+	else if (dTmp[1] < -180) dTmp[1] += 360;
+	jointData.Q_tar[1] = dTmp[1];
+
+	SET_SYSTEM_MEMORY("JointData", jointData);
 
 	double dPos[3] = { 0, 0, 0 };
 
@@ -578,6 +566,24 @@ void CRobotExp_4Dlg::OnBnClickedButtonSet()
 
 	m_editTarTorq.GetWindowText(str);
 	motor_data.current = atof(str.GetBuffer()) / 0.0683;
+
+	m_edit_Kp_cur.GetWindowText(str);
+	motor_data.Kp_cur = atof(str.GetBuffer());
+
+	m_edit_Ki_cur.GetWindowText(str);
+	motor_data.Ki_cur = atof(str.GetBuffer());
+
+	m_edit_kp_V.GetWindowText(str);
+	motor_data.Kp_V = atof(str.GetBuffer());
+
+	m_edit_Ki_V.GetWindowText(str);
+	motor_data.Ki_V = atof(str.GetBuffer());
+
+	m_edit_Kp_P.GetWindowText(str);
+	motor_data.Kp_P = atof(str.GetBuffer());
+
+	m_edit_Kd_P.GetWindowText(str);
+	motor_data.Kd_P = atof(str.GetBuffer());
 
 	SET_SYSTEM_MEMORY("JointData", ode_data);
 	SET_SYSTEM_MEMORY("CommWork_Controller_Current", motor_data);

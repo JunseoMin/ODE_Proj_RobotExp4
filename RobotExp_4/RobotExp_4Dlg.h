@@ -27,7 +27,35 @@ public:
 #endif
 
 	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV 지원입니다.
+		virtual void DoDataExchange(CDataExchange* pDX)
+		{
+			CDialogEx::DoDataExchange(pDX);
+			DDX_Control(pDX, IDC_COMBO_PORT, m_ComboPort);
+			DDX_Control(pDX, IDC_COMBO_BAUD, m_ComboBaud);
+			DDX_Control(pDX, IDC_CHECK1_OPEN, m_CheckOpen);
+			DDX_Control(pDX, IDC_EDIT_SEND, m_EditSend);
+			DDX_Control(pDX, IDC_EDIT_RECV, m_EditRecv);
+			DDX_Control(pDX, IDC_EDIT_CUR_POS_1, m_editCurPos1);
+			DDX_Control(pDX, IDC_EDIT_TAR_POS_1, m_editTarPos1);
+			DDX_Control(pDX, IDC_EDIT_TAR_POS_2, m_editTarPos2);
+			DDX_Control(pDX, IDC_EDIT_CUR_POS_2, m_editCurPos2);
+			DDX_Control(pDX, IDC_EDIT_TAR_VEL, m_editTarVel);
+			DDX_Control(pDX, IDC_EDIT_CUR_VEL, m_editCurVel);
+			DDX_Control(pDX, IDC_EDIT_TAR_TOR, m_editTarTorq);
+			DDX_Control(pDX, IDC_EDIT_CUR_TOR, m_editCurTorq);
+			DDX_Control(pDX, IDC_EDIT_TAR_X, m_editTarX);
+			DDX_Control(pDX, IDC_EDIT_CUR_X, m_editCurX);
+			DDX_Control(pDX, IDC_EDIT_TAR_Y, m_editTarY);
+			DDX_Control(pDX, IDC_EDIT_CUR_Y, m_editCurY);
+			DDX_Control(pDX, IDC_EDIT_TAR_Z, m_editTarZ);
+			DDX_Control(pDX, IDC_EDIT_CUR_Z, m_editCurZ);
+			DDX_Control(pDX, IDC_EDIT_Kp_cur, m_edit_Kp_cur);
+			DDX_Control(pDX, IDC_EDIT_Ki_cur, m_edit_Ki_cur);
+			DDX_Control(pDX, IDC_EDIT_Kp_V, m_edit_kp_V);
+			DDX_Control(pDX, IDC_EDIT_Ki_V, m_edit_Ki_V);
+			DDX_Control(pDX, IDC_EDIT_Kp_P, m_edit_Kp_P);
+			DDX_Control(pDX, IDC_EDIT_Kd_P, m_edit_Kd_P);
+		}	// DDX/DDV 지원입니다.
 
 
 public:
@@ -80,7 +108,14 @@ public:
 
 private:
 	CGraphDlg* m_pGraphDlg;
+
 public:
 	afx_msg void OnBnClickedButtonGraph();
 	afx_msg void OnBnClickedButtonSet();
+	CEdit m_edit_Kp_cur;
+	CEdit m_edit_Ki_cur;
+	CEdit m_edit_kp_V;
+	CEdit m_edit_Ki_V;
+	CEdit m_edit_Kp_P;
+	CEdit m_edit_Kd_P;
 };

@@ -5,11 +5,10 @@
 #include "stdafx.h"
 #include "RobotExp_4.h"
 #include "RobotExp_4Dlg.h"
-//page 3 include
+
 #include "ThreadWorker.h"
 #include "WorkBase.h"
 #include "ODEWork.h"
-
 #include "SystemMemory.h"
 #include "DataType.h"
 
@@ -57,9 +56,6 @@ BOOL CRobotExp_4App::InitInstance()
 	// INT_PTR nResponse = dlg.DoModal;
 
 
-	// ���� ���α׷� �Ŵ��佺Ʈ�� ComCtl32.dll ���� 6 �̻��� ����Ͽ� ���־� ��Ÿ����
-	// ����ϵ��� �����ϴ� ���, Windows XP �󿡼� �ݵ�� InitCommonControlsEx()�� �ʿ��մϴ�.
-	// InitCommonControlsEx()�� ������� ������ â�� ���� �� �����ϴ�.
 	INITCOMMONCONTROLSEX InitCtrls;
 	InitCtrls.dwSize = sizeof(InitCtrls);
 	// ���� ���α׷����� ����� ��� ���� ��Ʈ�� Ŭ������ �����ϵ���

@@ -17,6 +17,13 @@ typedef struct _controlData {
 	double velocity;
 	double current;
 
+	double Kp_cur;
+	double Ki_cur;
+	double Kp_V;
+	double Ki_V;
+	double Kp_P;
+	double Kd_P;
+
 }ControlData_t;
 
 
