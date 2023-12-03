@@ -154,7 +154,7 @@ ISR(TIMER0_OVF_vect){
 		// position control (PD) 
 		g_TimerCnt = 0;
 		
-		g_Perr = g_Pdes - g_Pcur	// error
+		g_Perr = g_Pdes - g_Pcur;	// error
 		g_P_derv = (g_Perr - g_P_derv_pre) / 0.05;	//derivate
 		g_P_derv_pre = g_Perr;
 		
