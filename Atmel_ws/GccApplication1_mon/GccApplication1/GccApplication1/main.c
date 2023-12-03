@@ -20,12 +20,15 @@ volatile int32_t g_Cnt, g_preCnt;
 volatile double g_Pdes = 0., g_Ppre;
 volatile double g_Pcur, g_Pvcur;
 volatile double g_Perr;
+volatile double g_P_derv;
+volatile double g_P_derv_pre;
 
 //voltage
 volatile double g_Vcur, g_Vpre;
 volatile double g_Vdes = 0.2;
 volatile double g_Verr;
 volatile double g_Vlimit = 1.;
+volatile double g_Verr_sum;
 
 //current
 volatile double g_Ccur;
@@ -145,31 +148,59 @@ ISR(TIMER0_OVF_vect){
 	PORTC = 0x03;
 	
 	g_Pcur = (g_Cnt / (4096. * 81.)) * 2 * M_PI; //[rpm]
-	g_Ccur = -(((g_ADC / 1024. * 5.) - 2.5) * 10. );
 	
-	//TO DO : PID control (11/29)
-	//
-	if((g_TimerCnt % 100) == 0){
-		
+	// TO DO : PID control (11/29)
+	if((g_TimerCnt % 100) == 0){	//	50ms
+		// position control (PD) 
 		g_TimerCnt = 0;
 		
-	}
-	if((g_TimerCnt % 10) == 0){
+		g_Perr = g_Pdes - g_Pcur	// error
+		g_P_derv = (g_Perr - g_P_derv_pre) / 0.05;	//derivate
+		g_P_derv_pre = g_Perr;
 		
+		g_pos_control = g_Perr * Kp_pos + g_P_derv * Kd_pos;	//error * pgain derivate*dgain
+		
+		if(g_pos_control > g_Vlimit){
+			g_pos_control = g_Vlimit;
+		}
+		else if(g_pos_control < -g_Vlimit){
+			g_pos_control = -g_Vlimit;
+		}
+	}
+	if((g_TimerCnt % 10) == 0){	// 5ms
+		// velocity control
+		g_Vdes = g_pos_control;
+
 		g_Vcur = (g_Pcur - g_Pvcur) / 0.005; //[rpm/s]
 		g_Pvcur = g_Pcur;
+		
+		g_Verr = g_Vdes - g_Vcur;
+		g_Verr_sum += g_Verr;
+		
+		//anti windup
+		if(g_vel_control > g_Climit){
+			g_Verr_sum -= (g_vel_control - g_Climit) * 1/Kp_vel;
+			g_vel_control	 = g_Climit;
+		}
+		else if(g_vel_control < -g_Climit){
+			g_Verr_sum -= (g_vel_control + g_Climit) * 1/Kp_vel;
+			g_vel_control = -g_Climit;
+		 }		
 	}
 	g_TimerCnt++;
 	
-	g_Cdes = -0.1;
+	g_Cdes = g_vel_control;
 	
 	g_Ccur = -( ((g_ADC / 1024. * 5.) - 2.5) * 10.);
 	g_Cerr = g_Cdes - g_Ccur;
 
-	cur_control = g_Cerr * 0.1 + g_Cerr_sum * 1.5;
+	cur_control = g_Cerr * Kp_cur + g_Cerr_sum * Ki_cur * 0.0005;	//PI control
+	
 	cur_control += g_Vcur * 0.0683;
 	
 	g_Cerr_sum += g_Cerr;
+	
+	
 	
 	//I-term anti
 	if(cur_control > 24){
