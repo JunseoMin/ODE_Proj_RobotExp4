@@ -56,7 +56,7 @@ private:
 		_CEasyMutex(std::mutex *poMutex) :
 			_poMutex(poMutex) {
 			_poMutex->lock();
-		}
+ 		}
 
 
 

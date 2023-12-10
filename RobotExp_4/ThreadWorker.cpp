@@ -43,6 +43,10 @@ public:
 
 	}
 
+	CWorkBase* GetWork()
+	{
+		return _poWork;
+	}
 
 
 	////////////////////////////////////////////////////////////////////////////////////////////
@@ -169,13 +173,6 @@ public:
 
 		return _period;
 	}
-
-	CWorkBase* GetWork()
-	{
-		return _poWork;
-	}
-
-
 
 protected:
 

@@ -17,13 +17,6 @@ typedef struct _controlData {
 	double velocity;
 	double current;
 
-	double Kp_cur;
-	double Ki_cur;
-	double Kp_V;
-	double Ki_V;
-	double Kp_P;
-	double Kd_P;
-
 }ControlData_t;
 
 
@@ -36,12 +29,6 @@ typedef struct _packet_data {
 	int pos;
 	int velo;
 	int cur;
-	int Kp_cur;
-	int Ki_cur;
-	int Kp_vel;
-	int Ki_vel;
-	int Kp_pos;
-	int Kd_pos;
 
 }Packet_data_t;
 

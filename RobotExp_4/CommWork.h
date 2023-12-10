@@ -62,11 +62,10 @@ private:
 	CComm _comm;
 
 	unsigned char _recvBuf[4096];
-	unsigned char writeBuf[4096];
+	unsigned char _writeBuf[4096];
 
 	Packet_t _sendPacket;
 	Packet_t _packet;
-
 };
 
 #endif
